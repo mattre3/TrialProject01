@@ -10,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 
 from page_objects.login_page import LoginPage
+from page_objects.home_page import HomePage
 
 
 class BitbarSeleniumSample(unittest.TestCase):
@@ -31,12 +32,11 @@ class BitbarSeleniumSample(unittest.TestCase):
 
     def test_login(self):
         loginPage = LoginPage(self.driver, self.username, self.password)
+        homePage = HomePage(self.driver)
         # I wrap this all in a try/except so I can save screenshots on failure
         try:
             print("test_login start")
-            wait = WebDriverWait(self.driver, 10)
-            actions = ActionChains(self.driver)
-            
+            wait = WebDriverWait(self.driver, 10)            
             # check page title
             self.driver.get("https://cloud.bitbar.com")
             expected_title = 'Smartbear BitBar - App Testing on Real Android and iOS Devices'
@@ -51,12 +51,8 @@ class BitbarSeleniumSample(unittest.TestCase):
                 self.driver.find_element(By.XPATH, "//button[@aria-label='Close']").click()
 
             #self.driver.save_screenshot(self.screenshot_dir + '/' + 'home_page.png')
-            # log out 
-            menuBtn = wait.until(EC.presence_of_element_located((By.ID, "header-menu-user")))
-            actions.move_to_element(menuBtn)
-            actions.perform()
-            logOutBtn = wait.until(EC.element_to_be_clickable((By.ID, "menu-user-logout")))
-            logOutBtn.click()
+            homePage.logout()
+
         except Exception:
             # take screenshot on failure
             timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")

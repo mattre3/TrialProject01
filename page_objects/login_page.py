@@ -4,9 +4,9 @@ from page_objects.base_page import BasePage
 
 class LoginPage(BasePage):   
     expected_title = 'Smartbear BitBar - App Testing on Real Android and iOS Devices'
-    username_selector = (By.ID, "login-email")
-    password_selector = (By.ID, "login-password")
-    login_btn_selector = (By.ID, "login-submit")
+    USERNAME_ITEM = (By.ID, "login-email")
+    PASSWORD_ITEM = (By.ID, "login-password")
+    LOGIN_BTN_ITEM = (By.ID, "login-submit")
 
     def __init__(self, driver, username, password):
         super().__init__(driver)
@@ -14,6 +14,6 @@ class LoginPage(BasePage):
         self.password = password
     
     def login(self):
-        self.wait_for(self.username_selector).send_keys(self.username)
-        self.find(self.password_selector).send_keys(self.password)
-        self.find(self.login_btn_selector).click()
+        self.wait_for(self.USERNAME_ITEM).send_keys(self.username)
+        self.find(self.PASSWORD_ITEM).send_keys(self.password)
+        self.find(self.LOGIN_BTN_ITEM).click()

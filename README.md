@@ -2,7 +2,7 @@
 
 Testy napisz proszę do [https://cloud.bitbar.com/](https://cloud.bitbar.com/) zakadając Trialowe konto.
 
-**Zadanie 1** Napisz 2 testy selenium (najlepiej w jednym pliku *.py) z walidjacjami jakie uznasz za wystarczające aby upewnić się, że wszystko poszło zgodnie z planem:
+**Zadanie 1** Napisz 2 testy selenium (najlepiej w jednym pliku *.py) z walidacjami jakie uznasz za wystarczające aby upewnić się, że wszystko poszło zgodnie z planem:
 
 1. Login:
     1. zaloguj na istniejącego użytkownika

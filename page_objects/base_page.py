@@ -28,6 +28,7 @@ class BasePage(object):
     
     # Stale Element Exception handler
     def click_stale_element(self, locator):
+        # TO-DO: IMPLEMENT A LOOP TO PREVENT INFINITE RECURSION
         try:
             self.wait_for_clickable(locator).click()
         except StaleElementReferenceException:

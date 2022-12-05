@@ -1,63 +1,95 @@
 import os
 import unittest
+import random 
+import string 
+from datetime import datetime
 
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
+from page_objects.login_page import LoginPage
+from page_objects.home_page import HomePage
+from page_objects.projects_page import ProjectsPage
 
 
-class BitbarSeleniumSample(unittest.TestCase):
+class BitbarSeleniumTest(unittest.TestCase):
 
     def setUp(self):
-        #
-        # IMPORTANT: Set the following parameters according to your needs.
-        # You can use Capabilities creator:
-        # https://cloud.bitbar.com/#public/capabilities-creator
-        # Please mind bitbar_apiKey is required and can be found at
-        # https://cloud.bitbar.com/#user/my-account (My Integrations > API Access)
-        #
-
-        # user-customizable parameters start here
-        capabilities = {
-        	'platform': 'Linux',
-        	'osVersion': '18.04',
-        	'browserName': 'firefox',
-        	'version': '107',
-        	'resolution': '2560x1920',
-        	'bitbar_apiKey': '<insert your BitBar API key here>',
-        }
-
-        # user-customizable parameters end here
-
+        self.apiKey = "IcCbLPoOGuNh662C78DJ7c8RV2hftRqv"
+        self.username = "michalkorybutwisniowiecki123@gmail.com"
+        self.password = "WiUgTgQl[nnEl"
         self.screenshot_dir = os.getcwd() + '/screenshots'
 
+        capabilities = {
+            'platformName': 'macOS',
+            'browserName': 'firefox',
+            'browserVersion': '106',
+            'bitbar:options': {
+                'apiKey': self.apiKey,
+                'resolution': '2560x1920',
+                'osVersion': '12'},
+            'bitbar_project': 'TrialProject01'
+        }   
+        
         self.driver = webdriver.Remote(command_executor='https://us-west-desktop-hub.bitbar.com/wd/hub',
                                        desired_capabilities=capabilities)
+        self.driver.maximize_window()
 
     def tearDown(self):
+        print("Done with session %s" % self.driver.session_id)
         self.driver.quit()
 
-    def test_sample(self):
-        # check page title
-        test_url = 'https://bitbar.github.io/web-testing-target/'
-        self.driver.get(test_url)
-        expected_title = 'Bitbar - Test Page for Samples'
-        assert self.driver.title == expected_title, 'Wrong page title'
-        print(self.driver.title)
-        self.driver.get_screenshot_as_file(self.screenshot_dir + '/' + '1_home_page.png')
+    def _generateProjectName(self):
+        letters = string.ascii_lowercase
+        result_str = ''.join(random.choice(letters) for i in range(10))
+        return result_str
 
-        # click "Click for answer" button
-        button = self.driver.find_element_by_xpath('//button[contains(., "Click for answer")]')
-        button.click()
+    def test_login(self):
+        try:
+            loginPage = LoginPage(self.driver, self.username, self.password)
+            loginPage.visit()
+            loginPage.login()
 
-        # check answer text
-        self.driver.find_element_by_xpath('//p[@id="result_element" and contains(., "Bitbar")]')
-        print(self.driver.find_element_by_id('result_element').text)
+            homePage = HomePage(self.driver)
+            # welcome to bitbar window might show up
+            homePage.closePopup()
+            homePage.logout()
 
-        # verify button changed color
-        style = str(button.get_attribute('style'))
-        expected_style = 'background-color: rgb(127, 255, 0);'
-        assert expected_style == style, 'Wrong button styling'
-        self.driver.get_screenshot_as_file(self.screenshot_dir + '/' + '2_button_clicked.png')
+        except Exception:
+            timestamp = datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
+            self.driver.save_screenshot(self.screenshot_dir + '/test_login-error-' + timestamp + '.png')
+            raise
 
+    
+    def test_projects(self):
+        try:
+            project_name_list = []
+
+            loginPage = LoginPage(self.driver, self.username, self.password)
+            loginPage.visit()
+            loginPage.login()
+
+            homePage = HomePage(self.driver)
+            # welcome to bitbar window might show up
+            homePage.closePopup()
+            homePage.nav_to_projects_page()
+
+            projectsPage = ProjectsPage(self.driver)
+            for i in range(3):
+                project_name = self._generateProjectName()
+                project_name_list.append(project_name)
+                projectsPage.create_new_project(project_name)
+
+            project_name_list.sort(reverse=True)
+            for project_name in project_name_list:
+                projectsPage.delete_project(project_name)
+            
+            #self.assertTrue(projectsPage.find_project("Android Demo Project"))
+            
+        except Exception:
+            timestamp = datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
+            self.driver.save_screenshot(self.screenshot_dir + '/test_project-error-' + timestamp + '.png')
+            raise
 
 if __name__ == "__main__":
     unittest.main()

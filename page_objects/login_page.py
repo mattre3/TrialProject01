@@ -12,6 +12,11 @@ class LoginPage(BasePage):
         super().__init__(driver)
         self.username = username 
         self.password = password
+
+    # login page is also starting page in all our tests, so we can visit it from here
+    def visit(self):
+        self.driver.get("https://cloud.bitbar.com") 
+        self.wait_for_title(self.expected_title)
     
     def login(self):
         self.wait_for(self.USERNAME_ITEM).send_keys(self.username)

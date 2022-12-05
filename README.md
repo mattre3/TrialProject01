@@ -24,3 +24,16 @@ Dostępne w BitBarze konfiguracje przeglądarek znajdziesz tu: [https://cloud.b
 Z testów możesz usunąć dane logowania, nie będą nam potrzebne do sprawdzenia zadań.
 
 Korzystaj z Pythona 3 i Selenium 4.
+
+-----------------------------------------------------------------------------------------------------------------
+
+Kazdy page ma properties z item na koncu - sa to tuple z lokatorem i selektorem do wykorzystania w metodach.
+
+Skupiłem się na tym, zeby testy były łatwe do "rozbudowy" w przyszłości o kolejne scenariusze, funkcjonalności.
+Dlatego np. metoda delete_project() nie skupia się na szczegółach zadania (są one w samym teście), tylko bierze
+nazwę projektu, który ma usunąć, sprawdza czy taki istnieje i go usuwa.
+
+Projects page zbudowałem z załozeniem, ze user moze stworzyc równiez wiele projektow o tej samej nazwie.
+
+W przypadku tworzenia, usuwania projektów uzyłem time.sleep(1) zeby dać chwilę na dołączenie/odłączenie elementu w DOMie. Nie mogłem znaleźć 
+

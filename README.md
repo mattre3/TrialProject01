@@ -3,8 +3,8 @@
 -----------------------------------------------------------------------------------------------------------------
 Python 3.9.13 | Selenium 4.7.2
 
-W zadanie1.py nalezy uzupełnić username i password.
-W zadanie2.py nalezy uzupełnić apiKey, username, password.
+W zadanie1.py nalezy uzupełnić username i password. W zadanie2.py nalezy uzupełnić apiKey, username, password.
+
 Zeby nie robić screnshotów przy błedach, nalezy wykomentować je w bloku except kazdego z testów.
 Wrzuciłem je sobie dla sprawnego sprawdzania co poszło nie tak przy dodawaniu, usuwaniu projektów.
 

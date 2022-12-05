@@ -15,8 +15,8 @@ from page_objects.projects_page import ProjectsPage
 class BitbarSeleniumTest(unittest.TestCase):
 
     def setUp(self):
-        self.username = "michalkorybutwisniowiecki123@gmail.com"
-        self.password = "WiUgTgQl[nnEl"
+        self.username = ""
+        self.password = ""
         self.screenshot_dir = os.getcwd() + '/screenshots'
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
 

@@ -5,7 +5,6 @@ import string
 from datetime import datetime
 
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 
 from page_objects.login_page import LoginPage
 from page_objects.home_page import HomePage
@@ -15,24 +14,22 @@ from page_objects.projects_page import ProjectsPage
 class BitbarSeleniumTest(unittest.TestCase):
 
     def setUp(self):
-        self.apiKey = "IcCbLPoOGuNh662C78DJ7c8RV2hftRqv"
-        self.username = "michalkorybutwisniowiecki123@gmail.com"
-        self.password = "WiUgTgQl[nnEl"
+        self.apiKey = ""
+        self.username = ""
+        self.password = ""
         self.screenshot_dir = os.getcwd() + '/screenshots'
 
         capabilities = {
-            'platformName': 'macOS',
+            'platformName': 'Windows',
             'browserName': 'firefox',
             'browserVersion': '106',
             'bitbar:options': {
                 'apiKey': self.apiKey,
-                'resolution': '2560x1920',
-                'osVersion': '12'},
-            'bitbar_project': 'TrialProject01'
-        }   
-        
+                'resolution': '1920x1080',
+                'osVersion': '10'}
+            }
         self.driver = webdriver.Remote(command_executor='https://us-west-desktop-hub.bitbar.com/wd/hub',
-                                       desired_capabilities=capabilities)
+                                        desired_capabilities=capabilities)
         self.driver.maximize_window()
 
     def tearDown(self):
